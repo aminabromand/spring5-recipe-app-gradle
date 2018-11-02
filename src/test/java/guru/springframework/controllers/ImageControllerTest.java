@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -88,11 +87,4 @@ public class ImageControllerTest {
         assertEquals(s.getBytes().length, responseBytes.length);
     }
 
-    @Test
-    public void testGetImageNumberFormatException() throws Exception {
-
-        mockMvc.perform(get("/recipe/test/recipeimage"))
-                .andExpect(status().isBadRequest())
-                .andExpect(view().name("400error"));
-    }
 }

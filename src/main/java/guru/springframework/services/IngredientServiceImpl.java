@@ -126,7 +126,6 @@ public class IngredientServiceImpl implements IngredientService {
                 log.error("Recipe not found for id: " + recipeId);
             } else {
                 Ingredient ingredient = ingredientOptional.get();
-                ingredient.setRecipe(null);
                 recipe.getIngredients().remove(ingredient);
                 recipeRepository.save(recipe);
             }
