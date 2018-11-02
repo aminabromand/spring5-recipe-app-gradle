@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,16 +58,16 @@ public class IngredientServiceImplTest {
     public void findByRecipeIdAndIngredientIdHappyPath() throws Exception {
         //given
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
 
         Ingredient ingredient1 = new Ingredient();
-        ingredient1.setId(1L);
+        ingredient1.setId("1");
 
         Ingredient ingredient2 = new Ingredient();
-        ingredient2.setId(2L);
+        ingredient2.setId("2");
 
         Ingredient ingredient3 = new Ingredient();
-        ingredient3.setId(3L);
+        ingredient3.setId("3");
 
         recipe.addIngredient(ingredient1);
         recipe.addIngredient(ingredient2);
@@ -74,15 +75,15 @@ public class IngredientServiceImplTest {
 
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         //when
-        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(1L, 3L);
+        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId("1", "3");
 
         //then
-        assertEquals(Long.valueOf(3L), ingredientCommand.getId());
-        assertEquals(Long.valueOf(1L), ingredientCommand.getRecipeId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        assertEquals("3", ingredientCommand.getId());
+        assertEquals("1", ingredientCommand.getRecipeId());
+        verify(recipeRepository, times(1)).findById(anyString());
 
     }
 
@@ -90,16 +91,16 @@ public class IngredientServiceImplTest {
     public void testSaveRecipeCommand() throws Exception {
         //given
         IngredientCommand command = new IngredientCommand();
-        command.setId(3L);
-        command.setRecipeId(2L);
+        command.setId("3");
+        command.setRecipeId("2");
 
         Optional<Recipe> recipeOptional = Optional.of(new Recipe());
 
         Recipe savedRecipe = new Recipe();
         savedRecipe.addIngredient(new Ingredient());
-        savedRecipe.getIngredients().iterator().next().setId(3L);
+        savedRecipe.getIngredients().iterator().next().setId("3");
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
         //when
@@ -107,7 +108,7 @@ public class IngredientServiceImplTest {
 
         //then
         assertEquals(Long.valueOf(3L), savedCommand.getId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, times(1)).save(any(Recipe.class));
 
     }
@@ -115,20 +116,20 @@ public class IngredientServiceImplTest {
     @Test
     public void testDeleteById() throws Exception {
         //given
-        Long recipeid = 1L;
-        Long idToDelete = 2L;
+        String recipeid = "1";
+        String idToDelete = "2";
 
         Recipe recipe = new Recipe();
         recipe.setId(recipeid);
 
         Ingredient ingredient1 = new Ingredient();
-        ingredient1.setId(1L);
+        ingredient1.setId("1");
 
         Ingredient ingredient2 = new Ingredient();
         ingredient2.setId(idToDelete);
 
         Ingredient ingredient3 = new Ingredient();
-        ingredient3.setId(3L);
+        ingredient3.setId("3");
 
         recipe.addIngredient(ingredient1);
         recipe.addIngredient(ingredient2);
@@ -136,7 +137,7 @@ public class IngredientServiceImplTest {
 
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         //when
 

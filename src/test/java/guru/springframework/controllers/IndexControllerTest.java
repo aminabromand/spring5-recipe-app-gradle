@@ -54,10 +54,10 @@ public class IndexControllerTest{
 		Set recipesData = new HashSet();
 		Recipe recipe;
 		recipe = new Recipe();
-		recipe.setId( 1L );
+		recipe.setId( "1" );
 		recipesData.add(recipe);
 		recipe = new Recipe();
-		recipe.setId( 2L );
+		recipe.setId( "2" );
 		recipesData.add(recipe);
 
 		when(recipeService.getRecipes()).thenReturn( recipesData );
