@@ -34,8 +34,8 @@ public class IngredientServiceImplTest {
     @Mock
     RecipeReactiveRepository recipeReactiveRepository;
 
-    @Mock
-    RecipeRepository recipeRepository;
+    //@Mock
+    //RecipeRepository recipeReactiveRepository;
 
     @Mock
     UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
@@ -52,7 +52,7 @@ public class IngredientServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, ingredientCommandToIngredient,
-                recipeReactiveRepository, recipeRepository, unitOfMeasureReactiveRepository);
+                recipeReactiveRepository, unitOfMeasureReactiveRepository);
     }
 
     @Test
@@ -99,13 +99,13 @@ public class IngredientServiceImplTest {
         command.setId("3");
         command.setRecipeId("2");
 
-        Optional<Recipe> recipeOptional = Optional.of(new Recipe());
+        Mono recipeMono = Mono.just(new Recipe());
 
         Recipe savedRecipe = new Recipe();
         savedRecipe.addIngredient(new Ingredient());
         savedRecipe.getIngredients().iterator().next().setId("3");
 
-        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeMono);
         when(recipeReactiveRepository.save(any())).thenReturn(Mono.just(savedRecipe));
 
         //when
@@ -113,7 +113,7 @@ public class IngredientServiceImplTest {
 
         //then
         assertEquals("3", savedCommand.getId());
-        verify(recipeRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
         verify(recipeReactiveRepository, times(1)).save(any(Recipe.class));
 
     }
@@ -140,9 +140,10 @@ public class IngredientServiceImplTest {
         recipe.addIngredient(ingredient2);
         recipe.addIngredient(ingredient3);
 
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
+        Mono recipeMono = Mono.just(recipe);
 
-        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeMono);
+        when(recipeReactiveRepository.save(any())).thenReturn(recipeMono);
 
         //when
 
@@ -151,7 +152,7 @@ public class IngredientServiceImplTest {
         //then
 
         assertEquals(2, recipe.getIngredients().size());
-        verify(recipeRepository, times(1)).findById(anyString());
-        verify(recipeRepository, times(1)).save(any());
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, times(1)).save(any(Recipe.class));
     }
 }

@@ -1,10 +1,15 @@
 package guru.springframework.controllers;
 
+import guru.springframework.domain.Recipe;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * Created by jt on 6/1/17.
@@ -23,7 +28,9 @@ public class IndexController {
     public String getIndexPage( Model model ){
 
         log.debug("Index request received");
-        model.addAttribute( "recipes", recipeService.getRecipes() );
+        Flux<Recipe> flux = recipeService.getRecipes();
+        Mono<List<Recipe>> list = flux.collectList();
+        model.addAttribute( "recipes", list.block() );
         return "index";
     }
 }
