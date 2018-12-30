@@ -6,8 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Set;
 
 public interface RecipeRepository extends CrudRepository<Recipe, String>{
-
-	Set<Recipe> findAll();
-
-	Recipe save(Recipe recipe);
+	//Set<Recipe> findAll();
+	//Recipe save(Recipe recipe);
 }
