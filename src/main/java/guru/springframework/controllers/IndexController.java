@@ -28,9 +28,8 @@ public class IndexController {
     public String getIndexPage( Model model ){
 
         log.debug("Index request received");
-        Flux<Recipe> flux = recipeService.getRecipes();
-        Mono<List<Recipe>> list = flux.collectList();
-        model.addAttribute( "recipes", list.block() );
+
+        model.addAttribute( "recipes", recipeService.getRecipes() );
         return "index";
     }
 }

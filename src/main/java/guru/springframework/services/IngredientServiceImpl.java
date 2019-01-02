@@ -90,6 +90,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     @Transactional
     public Mono<IngredientCommand> saveIngredientCommand(IngredientCommand command) {
+        log.error("Looking for Recipe for id: " + command.getRecipeId());
         Recipe recipe = recipeReactiveRepository.findById(command.getRecipeId()).block();
 
         if(recipe == null){
